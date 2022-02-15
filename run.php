@@ -41,10 +41,13 @@ if ($file !== '') {
         }
 
         $create_dir = mkdir($folder_user, 0755);
+
+
     
 
         if(move_uploaded_file($_FILES['file']['tmp_name'], $folder_user . '/' . $file_name)) {
             $responses[] = 'Convert successfully';
+            shell_exec('lapin.py');
         } else {
             $responses[] = 'Convert with errors';
         }
@@ -63,3 +66,5 @@ function _addError()
     print json_encode($responses);
     exit;
 }
+
+
