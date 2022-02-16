@@ -40,14 +40,15 @@ if ($file !== '') {
             $folder_user = "vds_" . ((string) rand(10000, 990000) . '_' . time());
         }
 
-        $create_dir = mkdir($folder_user, 0755);
+        mkdir($folder_user, 0755);
 
-
+        // $responses[] = $folder_user;
+        // chown($folder_user, "root");
 
 
         if (move_uploaded_file($_FILES['file']['tmp_name'], $folder_user . '/' . $file_name)) {
             $responses[] = 'Convert successfully';
-            shell_exec('lapin.py');
+            shell_exec('python3 lapin.py');
         } else {
             $responses[] = 'Convert with errors';
         }

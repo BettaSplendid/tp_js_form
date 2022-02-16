@@ -7,12 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
     <div>
         <h1>Filesave</h1>
     </div>
+
+    <div id="thing_to_hide" class="sk-chase">
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+    </div>
+
     <form action="" method="POST" id="form_controlee">
         <div>
             <input type="file" class="form_control" name="_files" id="_files" multiple>
@@ -21,90 +32,9 @@
             <input type="submit" value="save">
         </div>
     </form>
+
+
 </body>
-<script>
-    $("#form_controlee").on("submit", (e) => {
-        e.preventDefault();
-        fetchSaveFiles();
-    })
-
-
-    var fileList = [];
-    var fileInput = document.getElementById('_files')
-    fileInput.addEventListener('change', function() {
-        fileList = []
-        for (var i = 0; i < fileInput.files.length; i++) {
-            fileList.push(fileInput.files[i]);
-        }
-    });
-
-    function fetchSaveFiles() {
-        let authorized_format_file = [
-            "image/jpeg",
-            "image/jpg",
-        ];
-
-        if (fileList.length < 1) {
-            alert("Add a File")
-            return false;
-        }
-
-        if (fileList.length > 3) {
-            alert("You can only upload a maximum of 3 files.")
-            return false;
-        }
-
-        let isImageFile = true;
-        fileList.forEach(function(file) {
-            if (authorized_format_file.includes(file.type)) {
-                saveFiles(file);
-            } else {
-                alert("Only jpeg or jpg files");
-                isImageFile = false;
-            }
-        });
-
-        return isImageFile;
-    }
-
-    function saveFiles(file) {
-        var formData = new FormData();
-        formData.set('file', file);
-        formData.set('file_name', file.name);
-
-        $.ajax({
-            url: "/run.php",
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: formData,
-            type: 'post',
-
-            success: function(response) {
-                console.log(response)
-                console.log({
-                    response
-                })
-                response = JSON.parse(response);
-                if (response.error !== undefined) {
-                    return false;
-                }
-                let mon_message = response[0] ? response[0] : "";
-                // mon_message = "dwayne"
-                let html =
-                    `<div class="px-5">
-                    <span class="text-light">${mon_message}</span>
-                    </div>`;
-
-                $("#form_controlee").append($(html));
-            },
-            error: function(error) {
-                console.log(error);
-            }
-
-        });
-    }
-</script>
+<script src="script.js"></script>
 
 </html>
