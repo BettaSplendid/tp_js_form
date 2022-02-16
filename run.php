@@ -31,21 +31,21 @@ if ($file !== '') {
             "image/jpg",
         ];
 
-        if(!in_array($_FILES['file']["type"], $authorized_format_file)) {
+        if (!in_array($_FILES['file']["type"], $authorized_format_file)) {
             $responses[] = 'Format Invalide';
             _addError();
         }
 
-        while(is_dir($folder_user = "vds_" . ((string) rand(10000, 990000) . '_'. time()))) {
+        while (is_dir($folder_user = "vds_" . ((string) rand(10000, 990000) . '_' . time()))) {
             $folder_user = "vds_" . ((string) rand(10000, 990000) . '_' . time());
         }
 
         $create_dir = mkdir($folder_user, 0755);
 
 
-    
 
-        if(move_uploaded_file($_FILES['file']['tmp_name'], $folder_user . '/' . $file_name)) {
+
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $folder_user . '/' . $file_name)) {
             $responses[] = 'Convert successfully';
             shell_exec('lapin.py');
         } else {
@@ -66,5 +66,3 @@ function _addError()
     print json_encode($responses);
     exit;
 }
-
-
